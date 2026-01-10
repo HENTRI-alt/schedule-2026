@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мій Розклад (Оновлений)</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --accent: #bb86fc;
+            --accent-secondary: #03dac6;
+            --text-main: #ffffff;
+            --text-secondary: #b0b0b0;
+            --group-selected-bg: #3700b3;
+            --error-color: #cf6679;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+
+        .controls {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            margin-bottom: 20px;
+        }
+
+        .group-selector {
+            display: flex;
+            background: #2c2c2c;
+            border-radius: 8px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .group-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .group-btn.active {
+            background-color: var(--group-selected-bg);
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .date-control {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-left: 2px;
+        }
+
+        input[type="date"] {
+            background: #2c2c2c;
+            border: 1px solid #333;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        input[type="date"]:focus {
+            border-color: var(--accent);
+        }
+
+        .info-panel {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .day-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .week-info {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .schedule-list {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-bottom: 40px;
+        }
+
+        .lesson-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            border-left: 5px solid var(--accent);
+            display: flex;
+            align-items: flex-start;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .lesson-card.split-lesson {
+            border-left-color: var(--accent-secondary); 
+        }
+
+        .lesson-number {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--text-secondary);
+            margin-right: 15px;
+            min-width: 25px;
+            padding-top: 2px;
+        }
+
+        .lesson-details {
+            flex-grow: 1;
+        }
+
+        .lesson-subject {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .lesson-meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .meta-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .no-classes {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 40px;
+            font-size: 1.1rem;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+        }
+        
+        .out-of-range {
+            text-align: center;
+            color: var(--error-color);
+            background: rgba(207, 102, 121, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--error-color);
+        }
+
+        .empty-slot {
+            opacity: 0.5;
+            border-left-color: #444;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎓 Мій Розклад</h1>
+
+    <div class="controls">
+        <div class="date-control">
+            <label>Твоя підгрупа:</label>
+            <div class="group-selector">
+                <button class="group-btn active" onclick="setGroup(1)">1 Група</button>
+                <button class="group-btn" onclick="setGroup(2)">2 Група</button>
+            </div>
+        </div>
+
+        <div class="date-control">
+            <label for="datePicker">Дата:</label>
+            <input type="date" id="datePicker">
+        </div>
+    </div>
+
+    <div class="info-panel" id="infoPanel"></div>
+
+    <div class="schedule-list" id="scheduleList"></div>
+
+    <script>
+        // === НАЛАШТУВАННЯ ===
+        let currentGroup = 1;
+        
+        // Чіткі межі розкладу
+        const SCHEDULE_START = new Date('2026-01-12T00:00:00');
+        const SCHEDULE_END = new Date('2026-02-08T23:59:59');
+
+        // === ДАНІ (ОНОВЛЕНІ) ===
+        const schedule = {
+            1: { // Понеділок
+                1: { subject: "Укр. Література (Лк)", teacher: "Волкова Л.В.", room: "501" },
+                2: { subject: "Укр. Мова (Пз)", teacher: "Волкова Л.В.", room: "501" },
+                3: { 
+                    split: true,
+                    g1: { subject: "Іноземна мова (Пз1)", teacher: "Каташов О.А.", room: "104" },
+                    g2: { subject: "Іноземна мова (Пз2)", teacher: "Ігнатьєва Н.В.", room: "105" }
+                },
+                4: [
+                    null, // 12.01
+                    { subject: "Біологія / Екологія (Лк)", teacher: "Каплун О.А.", room: "321" }, // 19.01 (ДОДАНО)
+                    { subject: "Біологія / Екологія (Лк)", teacher: "Каплун О.А.", room: "321" }, // 26.01
+                    { subject: "Біологія / Екологія (Лк)", teacher: "Каплун О.А.", room: "321" }  // 02.02
+                ]
+            },
+            2: { // Вівторок
+                1: { subject: "Географія (Лк)", teacher: "Корнєєва І.А.", room: "511" },
+                2: { subject: "Фізика / Астрономія (Лк)", teacher: "Семенченко Т.О.", room: "507" },
+                3: [ 
+                    { subject: "Захист України (Лк)", teacher: "Афанасьєв М.О.", room: "320" }, // 13.01
+                    { subject: "Захист України (Лк)", teacher: "Афанасьєв М.О.", room: "320" }, // 20.01 (ДОДАНО)
+                    { subject: "Інформатика (Лк)", teacher: "Бочарнікова І.В.", room: "309" }, // 27.01
+                    { subject: "Захист України (Лк)", teacher: "Афанасьєв М.О.", room: "320" }  // 03.02
+                ],
+                4: null
+            },
+            3: { // Середа
+                1: { subject: "Осн. Програмування (Лк)", teacher: "Абросімов М.О.", room: "324а" },
+                2: { subject: "Осн. Програмування (Лк)", teacher: "Абросімов М.О.", room: "325" },
+                3: { subject: "Математика (Лк)", teacher: "Матвійченко О.В.", room: "405" },
+                4: { subject: "Зар. Література (Лк)", teacher: "Супрун Л.О.", room: "404" }
+            },
+            4: { // Четвер
+                1: [
+                    { subject: "Осн. Програмування (Лк)", teacher: "Абросімов М.О.", room: "214" },
+                    { subject: "Захист України (Лк)", teacher: "Афанасьєв М.О.", room: "320" },
+                    { subject: "Осн. Програмування (Лк)", teacher: "Абросімов М.О.", room: "214" },
+                    { subject: "Захист України (Лк)", teacher: "Афанасьєв М.О.", room: "320" }
+                ],
+                2: { subject: "ФКЗ (Пз)", teacher: "Малік І.М.", room: "102" },
+                3: { subject: "Всесвітня Історія (Лк)", teacher: "Панова О.С.", room: "401" },
+                4: [
+                    null, 
+                    { subject: "Осн. Програмування (Лк)", teacher: "Абросімов М.О.", room: "101" }, 
+                    null, 
+                    { subject: "Осн. Програмування (Лк)", teacher: "Абросімов М.О.", room: "101" } 
+                ]
+            },
+            5: { // П'ятниця
+                1: [
+                    { subject: "Інформатика (Лк)", teacher: "Бочарнікова І.В.", room: "308" },
+                    { subject: "Фізика / Астрономія", teacher: "Семенченко Т.О.", room: "507" },
+                    { subject: "Інформатика (Лк)", teacher: "Бочарнікова І.В.", room: "308" },
+                    { subject: "Фізика / Астрономія", teacher: "Семенченко Т.О.", room: "507" }
+                ],
+                2: [
+                    { subject: "Зар. Література (Лк)", teacher: "Супрун Л.О.", room: "404" },
+                    { subject: "Історія України (Шк)", teacher: "Панова О.С.", room: "401" },
+                    { subject: "Зар. Література (Лк)", teacher: "Супрун Л.О.", room: "404" },
+                    { subject: "Історія України (Шк)", teacher: "Панова О.С.", room: "401" }
+                ],
+                3: { subject: "Технології (КПр.)", teacher: "Мілютіна О.С.", room: "515" },
+                4: { subject: "Гром. Освіта (Ек)", teacher: "Оксененко С.П.", room: "407" }
+            }
+        };
+
+        const datePicker = document.getElementById('datePicker');
+        const infoPanel = document.getElementById('infoPanel');
+        const scheduleList = document.getElementById('scheduleList');
+        const btns = document.querySelectorAll('.group-btn');
+
+        const savedGroup = localStorage.getItem('myScheduleGroup');
+        if (savedGroup) {
+            currentGroup = parseInt(savedGroup);
+            updateGroupButtons();
+        }
+
+        datePicker.valueAsDate = new Date();
+        updateSchedule();
+
+        datePicker.addEventListener('change', updateSchedule);
+
+        function setGroup(groupNum) {
+            currentGroup = groupNum;
+            localStorage.setItem('myScheduleGroup', groupNum);
+            updateGroupButtons();
+            updateSchedule();
+        }
+
+        function updateGroupButtons() {
+            btns.forEach((btn, index) => {
+                if (index + 1 === currentGroup) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        function updateSchedule() {
+            const selectedDate = new Date(datePicker.value);
+            const dayOfWeek = selectedDate.getDay(); 
+
+            scheduleList.innerHTML = '';
+
+            // Перевірка: чи входить дата в період 12.01 - 08.02
+            const checkDate = new Date(selectedDate);
+            checkDate.setHours(0,0,0,0);
+            const limitStart = new Date(SCHEDULE_START);
+            limitStart.setHours(0,0,0,0);
+            const limitEnd = new Date(SCHEDULE_END);
+            limitEnd.setHours(23,59,59,999);
+
+            const daysMap = ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"];
+            const currentDayName = daysMap[dayOfWeek];
+
+            if (checkDate < limitStart || checkDate > limitEnd) {
+                infoPanel.innerHTML = `<div class="day-title">${currentDayName}</div>`;
+                scheduleList.innerHTML = `<div class="out-of-range">🚫 На цей період розкладу немає.<br>Він діє з 12.01 по 08.02.</div>`;
+                return;
+            }
+
+            const diffTime = checkDate - limitStart;
+            const weekIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
+
+            const weekNames = ["1-й тиждень (12.01 - 18.01)", "2-й тиждень (19.01 - 25.01)", "3-й тиждень (26.01 - 01.02)", "4-й тиждень (02.02 - 08.02)"];
+
+            infoPanel.innerHTML = `
+                <div class="day-title">${currentDayName}</div>
+                <div class="week-info">${weekNames[weekIndex] || "Тиждень"}</div>
+            `;
+
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+                scheduleList.innerHTML = '<div class="no-classes">Вихідний! 🎉</div>';
+                return;
+            }
+
+            const daySchedule = schedule[dayOfWeek];
+            if (!daySchedule) {
+                 scheduleList.innerHTML = '<div class="no-classes">Немає даних</div>';
+                 return;
+            }
+
+            for (let i = 1; i <= 4; i++) {
+                let lessonData = daySchedule[i];
+
+                if (Array.isArray(lessonData)) {
+                    lessonData = lessonData[weekIndex];
+                }
+
+                if (lessonData && lessonData.split) {
+                    lessonData = (currentGroup === 1) ? lessonData.g1 : lessonData.g2;
+                }
+
+                renderCard(i, lessonData);
+            }
+        }
+
+        function renderCard(num, lesson) {
+            const card = document.createElement('div');
+            
+            if (lesson) {
+                card.className = 'lesson-card';
+                card.innerHTML = `
+                    <div class="lesson-number">${num}</div>
+                    <div class="lesson-details">
+                        <div class="lesson-subject">${lesson.subject}</div>
+                        <div class="lesson-meta">
+                            <div class="meta-row"><span>👤</span> ${lesson.teacher}</div>
+                            <div class="meta-row"><span>🚪</span> ${lesson.room}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                card.className = 'lesson-card empty-slot';
+                card.innerHTML = `
+                    <div class="lesson-number">${num}</div>
+                    <div class="lesson-details">
+                        <div class="lesson-subject">Вікно</div>
+                    </div>
+                `;
+            }
+            scheduleList.appendChild(card);
+        }
+    </script>
+</body>
+</html>

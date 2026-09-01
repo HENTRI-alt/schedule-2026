@@ -53,8 +53,17 @@
             .emp { opacity: 0.6; border-style: dashed; background: transparent; box-shadow: none; border-left-width: 1px; }
             .win { color: var(--tm); font-style: italic; align-self: center; font-size: 1rem; }
             .nodata { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--tm); font-size: 1.2rem; background: var(--c); border-radius: 12px; border: 1px solid var(--br); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-            @media(max-width:700px){ .grid { grid-template-columns: 1fr; } .ctrl, .quick-btns { flex-direction: column; } .qb { width: 100%; } }
+            
+            /* Break Indicator Styles */
+            .break-banner { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: var(--c); color: var(--t); padding: 12px 25px; border-radius: 0 0 16px 16px; border: 1px solid var(--br); border-top: none; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; gap: 12px; transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+            .break-banner.show { top: 0; border-color: var(--a); box-shadow: 0 10px 30px rgba(88,166,255,0.2); }
+            .break-timer { font-family: monospace; font-size: 1.1rem; background: var(--bg); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--br); color: var(--a); transition: 0.2s; }
+            .break-timer.urgent { color: var(--red); border-color: var(--red); animation: pulse-red 1s infinite; }
+            @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(218,54,51,0.4); } 70% { box-shadow: 0 0 0 6px rgba(218,54,51,0); } 100% { box-shadow: 0 0 0 0 rgba(218,54,51,0); } }
+
+            @media(max-width:700px){ .grid { grid-template-columns: 1fr; } .ctrl, .quick-btns { flex-direction: column; } .qb { width: 100%; } .break-banner { width: 90%; justify-content: center; border-radius: 8px; margin-top: 10px; border-top: 1px solid var(--br); top: -150px; } .break-banner.show { top: 10px; } }
             </style></head><body>
+            <div id="breakBanner" class="break-banner">☕ Перерва! До заняття: <span id="breakTimer" class="break-timer">00:00</span></div>
             <div class="w">
                 <h1>ПЗ-11</h1>
                 
@@ -102,7 +111,7 @@
                 P.addEventListener('change', R);
             }
             
-            setInterval(checkLive, 30000);
+            setInterval(checkLive, 1000);
             
             function setDate(offset) {
                 const d = new Date();
@@ -195,13 +204,21 @@
             }
             
             function checkLive() {
+                const banner = document.getElementById('breakBanner');
+                const timerEl = document.getElementById('breakTimer');
+
                 if(!P) return;
                 const d = P.value;
                 const todayStr = fmt(new Date());
-                if (d !== todayStr) return;
+                
+                if (d !== todayStr || !DB[d]) {
+                    banner.classList.remove('show');
+                    return;
+                }
                 
                 const now = new Date();
-                const currentMinutes = now.getHours() * 60 + now.getMinutes();
+                const currentSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+                let isClassLive = false;
                 
                 document.querySelectorAll('.slot-card').forEach(card => {
                     card.classList.remove('live');
@@ -211,14 +228,50 @@
                     if(ts && te) {
                         const [sh, sm] = ts.split(':').map(Number);
                         const [eh, em] = te.split(':').map(Number);
-                        const startMin = sh * 60 + sm;
-                        const endMin = eh * 60 + em;
+                        const startSec = sh * 3600 + sm * 60;
+                        const endSec = eh * 3600 + em * 60;
                         
-                        if (currentMinutes >= startMin && currentMinutes <= endMin) {
+                        if (currentSeconds >= startSec && currentSeconds < endSec) {
                             card.classList.add('live');
+                            isClassLive = true;
                         }
                     }
                 });
+
+                if (!isClassLive) {
+                    let upcomingStart = null;
+                    
+                    for (let i = 0; i < TIMINGS.length; i++) {
+                        const t = TIMINGS[i];
+                        if (!t.s) continue;
+                        const [sh, sm] = t.s.split(':').map(Number);
+                        const startSec = sh * 3600 + sm * 60;
+                        if (startSec > currentSeconds) {
+                            upcomingStart = startSec;
+                            break;
+                        }
+                    }
+
+                    if (upcomingStart) {
+                        const diff = upcomingStart - currentSeconds;
+                        if (diff <= 1800) { // Показуємо за 30 хвилин до дзвінка
+                            const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                            const s = (diff % 60).toString().padStart(2, '0');
+                            timerEl.innerText = m + ':' + s;
+                            
+                            if (diff <= 60) timerEl.classList.add('urgent');
+                            else timerEl.classList.remove('urgent');
+
+                            banner.classList.add('show');
+                        } else {
+                            banner.classList.remove('show');
+                        }
+                    } else {
+                        banner.classList.remove('show');
+                    }
+                } else {
+                    banner.classList.remove('show');
+                }
             }
             
             R();

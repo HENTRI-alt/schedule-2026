@@ -196,8 +196,7 @@
                         
                         acts += '</div>';
                         
-                        // Додав спан таймера (.c-timer) прямо в live-badge
-                        div.innerHTML = '<div class="live-badge">Поточне заняття <span style="opacity:0.5; margin:0 4px">•</span> <span class="c-timer" style="font-family:monospace; font-size:0.8rem;">00:00</span></div><div class="head"><div class="n-col"><div class="n">' + i + '</div>' + timeHTML + '</div><div style="flex:1"><div class="tit">' + l.sub + '</div><div class="meta"><div class="meta-row"><span>' + l.name + '</span><span>' + (l.room ? l.room : '') + '</span></div></div></div></div>' + acts;
+                        div.innerHTML = '<div class="live-badge">Поточне заняття <span style="opacity:0.5; margin:0 4px">•</span> <span class="c-timer" style="font-weight:600; font-size:0.8rem;">...</span></div><div class="head"><div class="n-col"><div class="n">' + i + '</div>' + timeHTML + '</div><div style="flex:1"><div class="tit">' + l.sub + '</div><div class="meta"><div class="meta-row"><span>' + l.name + '</span><span>' + (l.room ? l.room : '') + '</span></div></div></div></div>' + acts;
                     }
                     c.appendChild(div);
                 }
@@ -235,13 +234,19 @@
                             card.classList.add('live');
                             isClassLive = true;
                             
-                            // Оновлюємо таймер всередині пари
                             const tSpan = card.querySelector('.c-timer');
                             if (tSpan) {
                                 const diff = endSec - currentSeconds;
-                                const m = Math.floor(diff / 60).toString().padStart(2, '0');
-                                const s = (diff % 60).toString().padStart(2, '0');
-                                tSpan.innerText = m + ':' + s;
+                                const h = Math.floor(diff / 3600);
+                                const m = Math.floor((diff % 3600) / 60);
+                                
+                                let timeStr = '';
+                                if (h > 0) timeStr += h + ' год ';
+                                timeStr += m + ' хв';
+                                
+                                if (diff < 60) timeStr = '< 1 хв';
+                                
+                                tSpan.innerText = timeStr;
                             }
                         }
                     }

@@ -1,300 +1,502 @@
-<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Розклад: ПЗ - 11</title><style>
-            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-            :root { --b: #0d1117; --c: #161b22; --t: #c9d1d9; --tm: #8b949e; --br: #30363d; --a: #58a6ff; }
-            body { font-family: 'Inter', sans-serif; background: var(--b); color: var(--t); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; -webkit-font-smoothing: antialiased;}
-            .w { width: 100%; max-width: 1000px; padding-top: 20px; }
-            h1 { text-align: center; color: var(--a); font-size: 1.8rem; margin: 0 0 25px 0; }
-            
-            .ctrl-wrap { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; background: var(--c); padding: 20px; border-radius: 12px; border: 1px solid var(--br); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-            .ctrl { display: flex; justify-content: center; align-items: center; gap: 15px;}
-            .quick-btns { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-            .qb { background: transparent; border: 1px solid var(--br); color: var(--t); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit; transition: 0.2s;}
-            .qb:hover { border-color: var(--a); color: var(--a); }
-            .qb.active { background: rgba(88,166,255,0.1); border-color: var(--a); color: var(--a); }
-            
-            .qb-class { background: #9d7cff1a; border-color: #9d7cff; color: #9d7cff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px; }
-            .qb-class:hover { background: #9d7cff; color: #fff; border-color: #9d7cff; }
-            
-            input[type="date"] { background: var(--b); border: 1px solid var(--br); color: var(--t); padding: 10px 16px; border-radius: 8px; font-size: 1rem; outline: none; font-family: inherit; cursor: pointer; color-scheme: dark;}
-            input[type="date"]:focus { border-color: var(--a); }
-            
-            .d-t { text-align: center; font-size: 1.5rem; font-weight: 700; margin-bottom: 25px; display:flex; align-items:center; justify-content:center; gap: 10px;}
-            .d-h { color: var(--a); background: rgba(88,166,255,0.1); padding: 4px 12px; border-radius: 8px; }
-            
-            .grid { display: grid; gap: 20px; grid-template-columns: 1fr 1fr; }
-            .col-h { text-align: center; font-weight: 700; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;}
-            
-            .h1 { color: #9d7cff; background: #9d7cff1a; border: 1px solid #9d7cff33; }
-            .h2 { color: #f6b93b; background: #f6b93b1a; border: 1px solid #f6b93b33; }
-            .f1 { border-left-color: #9d7cff; }
-            .f2 { border-left-color: #f6b93b; }
-            
-            .list { display: flex; flex-direction: column; gap: 12px; }
-            .card { background: var(--c); padding: 16px; border-radius: 12px; min-height: 80px; display: flex; flex-direction: column; justify-content: center; border: 1px solid var(--br); border-left-width: 5px; position: relative; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.15);}
-            .card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); border-right-color: #484f58; border-top-color: #484f58; border-bottom-color: #484f58;}
-            
-            .card.live { border-color: var(--a); box-shadow: 0 0 15px rgba(88,166,255,0.3); transform: scale(1.02); z-index: 2;}
-            .live-badge { display: none; position: absolute; top: -12px; right: 20px; background: var(--a); color: #000; font-size: 0.75rem; font-weight: 800; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; animation: pulse 2s infinite; }
-            .card.live .live-badge { display: flex; align-items: center; gap: 6px; }
-            @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(88,166,255,0.7); } 70% { box-shadow: 0 0 0 10px rgba(88,166,255,0); } 100% { box-shadow: 0 0 0 0 rgba(88,166,255,0); } }
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0e0e10" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+<title>Розклад: ПЗ - 11</title>
+<style>
+:root{
+  color-scheme:dark light;
+  --bg:#0e0e10; --row:#1b1b1e; --sep:#2d2d31;
+  --text:#f2f2f4; --muted:#9a9aa1; --dim:#76767d;
+  --accent:#0a84ff; --accent-bg:rgba(10,132,255,.15);
+  --green:#238636; --exam:#ff9f0a; --ok:#30d158;
+  --seg-bg:rgba(118,118,128,.24); --seg-on:#636366;
+  --bar-l:60%;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI Variable","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:light){
+  :root{
+    --bg:#f2f2f7; --row:#ffffff; --sep:#dcdce1;
+    --text:#111114; --muted:#6c6c72; --dim:#8e8e95;
+    --accent:#007aff; --accent-bg:rgba(0,122,255,.1);
+    --green:#1f7a33; --exam:#c26a00; --ok:#1f9d46;
+    --seg-bg:rgba(118,118,128,.12); --seg-on:#ffffff;
+    --bar-l:48%;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.4;
+  -webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;
+}
+button{font-family:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-            .head { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 5px; }
-            .n-col { display: flex; flex-direction: column; align-items: center; width: 45px; shrink: 0; }
-            .n { font-size: 1.5rem; font-weight: 800; color: #484f58; line-height: 1; }
-            .n-time { font-size: 0.7rem; font-weight: 600; color: var(--tm); text-align: center; margin-top: 5px; line-height: 1.2; white-space: nowrap; }
-            .tit { font-size: 1.1rem; font-weight: 700; line-height: 1.3; margin-bottom: 6px; color: var(--t); margin-top: -2px;}
-            .meta { font-size: 0.9rem; color: var(--tm); display: flex; flex-direction: column; gap: 4px;}
-            .meta-row { display: flex; gap: 15px; flex-wrap: wrap; }
-            
-            .card-actions { margin-top: 15px; margin-left: 60px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;}
-            .btn { background: #238636; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; display: inline-block; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; cursor: pointer;}
-            .btn:hover { background: #2ea043; }
-            
-            .copy-b { cursor: pointer; padding: 6px 12px; background: rgba(255,255,255,0.05); border-radius: 6px; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; font-family: monospace; font-size: 0.85rem; color: var(--tm); border: 1px solid var(--br); }
-            .copy-b:hover { background: rgba(255,255,255,0.1); color: var(--a); border-color: var(--a); }
+.app{max-width:640px;margin:0 auto;padding:max(20px,env(safe-area-inset-top)) 16px calc(48px + env(safe-area-inset-bottom))}
+.app[data-mode="both"]{max-width:980px}
 
-            .emp { opacity: 0.6; border-style: dashed; background: transparent; box-shadow: none; border-left-width: 1px; }
-            .win { color: var(--tm); font-style: italic; align-self: center; font-size: 1rem; }
-            .nodata { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--tm); font-size: 1.2rem; background: var(--c); border-radius: 12px; border: 1px solid var(--br); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-            
-            .break-banner { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: var(--c); color: var(--t); padding: 12px 25px; border-radius: 0 0 16px 16px; border: 1px solid var(--br); border-top: none; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; gap: 12px; transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-            .break-banner.show { top: 0; border-color: var(--a); box-shadow: 0 10px 30px rgba(88,166,255,0.2); }
-            .break-timer { font-family: monospace; font-size: 1.1rem; background: var(--bg); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--br); color: var(--a); transition: 0.2s; }
-            .break-timer.urgent { color: var(--red); border-color: var(--red); animation: pulse-red 1s infinite; }
-            @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(218,54,51,0.4); } 70% { box-shadow: 0 0 0 6px rgba(218,54,51,0); } 100% { box-shadow: 0 0 0 0 rgba(218,54,51,0); } }
+/* ---------- верх ---------- */
+.top h1{margin:0;font-size:34px;line-height:1.1;font-weight:700}
+.top p{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.seg{
+  display:grid;grid-auto-flow:column;grid-auto-columns:1fr;margin-top:16px;padding:2px;border-radius:9px;background:var(--seg-bg);
+}
+.seg button{
+  border:0;background:transparent;padding:7px 10px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;
+}
+.seg button[aria-checked="true"]{background:var(--seg-on);box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.seg .wide{display:none}
+@media (min-width:900px){.seg .wide{display:block}}
 
-            @media(max-width:700px){ .grid { grid-template-columns: 1fr; } .ctrl, .quick-btns { flex-direction: column; } .qb { width: 100%; } .break-banner { width: 90%; justify-content: center; border-radius: 8px; margin-top: 10px; border-top: 1px solid var(--br); top: -150px; } .break-banner.show { top: 10px; } }
-            </style></head><body>
-            <div id="breakBanner" class="break-banner">☕ Перерва! До заняття: <span id="breakTimer" class="break-timer">00:00</span></div>
-            <div class="w">
-                <h1>ПЗ - 11</h1>
-                
-                <div class="ctrl-wrap">
-                    <div class="quick-btns">
-                        <button class="qb" onclick="setDate(0)" id="qb-today">Сьогодні</button>
-                        <button class="qb" onclick="setDate(1)" id="qb-tom">Завтра</button>
-                        <a href="https://classroom.google.com/" target="_blank" class="qb qb-class">🎓 Классрум</a>
-                    </div>
-                    <div class="ctrl">
-                        <span style="color:var(--tm); font-weight:600;">Обрати дату:</span>
-                        <input type="date" id="p">
-                    </div>
-                </div>
-                
-                <div id="dt" class="d-t"></div>
-                <div id="main" class="grid">
-                    <div>
-                        <div class="col-h h1">Підгрупа 1</div>
-                        <div id="l1" class="list"></div>
-                    </div>
-                    <div><div class="col-h h2">Підгрупа 2</div><div id="l2" class="list"></div></div>
-                </div>
-            </div>
-            <script>
-            const DB = {"2026-10-05":{"1":{"1":{"name":"Кушнарьов Максим Олександрович","sub":"Інформаційні технології","room":"","link":"https://meet.google.com/tjt-qger-inx","classLink":"","zid":"","zcode":"","id":"muu09iebzb92dy5qsdq"},"2":{"name":"Сотнікова С.В.","sub":"Теоретичні основи електротехніки та електроніки (ТЕКС)","room":"","link":"https://zoom.us/j/8436470819","classLink":"https://classroom.google.com/c/ODc2OTk2MDQ1NTYx","zid":"843 647 0819","zcode":"284088","id":"muu0j2ydpqxqumgtu8f"},"3":{"name":"Малік І.М.","sub":"Фізична культура і здоров’я","room":"","link":"https://zoom.us/j/83483862050","classLink":"https://classroom.google.com/c/Nzc0NzI4ODQ3MTA3","zid":"83483862050","zcode":"101967","id":"muu0dcx6305dgit9b4n"},"4":{"name":"Мілютіна О.С.","sub":"Математика","room":"","link":"https://zoom.us/j/9783579002","classLink":"https://classroom.google.com/c/ODc4MDQyNDEyNDQ3","zid":"978 357 9002","zcode":"211047","id":"muu0ec5ioxsunlfjxad"}},"2":{"1":{"name":"Кушнарьов Максим Олександрович","sub":"Інформаційні технології","room":"","link":"https://meet.google.com/tjt-qger-inx","classLink":"","zid":"","zcode":"","id":"muu09iebzb92dy5qsdq"},"2":{"name":"Сотнікова С.В.","sub":"Теоретичні основи електротехніки та електроніки (ТЕКС)","room":"","link":"https://zoom.us/j/8436470819","classLink":"https://classroom.google.com/c/ODc2OTk2MDQ1NTYx","zid":"843 647 0819","zcode":"284088","id":"muu0j2ydpqxqumgtu8f"},"3":{"name":"Малік І.М.","sub":"Фізична культура і здоров’я","room":"","link":"https://zoom.us/j/83483862050","classLink":"https://classroom.google.com/c/Nzc0NzI4ODQ3MTA3","zid":"83483862050","zcode":"101967","id":"muu0dcx6305dgit9b4n"},"4":{"name":"Мілютіна О.С.","sub":"Математика","room":"","link":"https://zoom.us/j/9783579002","classLink":"https://classroom.google.com/c/ODc4MDQyNDEyNDQ3","zid":"978 357 9002","zcode":"211047","id":"muu0ec5ioxsunlfjxad"}}},"2026-10-06":{"1":{"1":{"name":"Чумак Віталій Миколайович","sub":"Технології (Основи підприємницької діяльності)","room":"","link":"https://us05web.zoom.us/j/86341557769?pwd=EKTcw8u0xrtC6VlCUAdF0BNrDVRXc1.1","classLink":"","zid":"86341557769","zcode":"2kFaeZ","id":"muu0f028hu295sho92o"},"2":{"name":"Каплун О.А.","sub":"Біологія і екологія","room":"","link":"https://zoom.us/j/5698912902","classLink":"https://classroom.google.com/c/ODg0ODgwMTQ1MDM1","zid":"569 891 2902","zcode":"321","id":"muu0fglq8zeq7cp4ypl"},"3":{"name":"Горбатенко П.П.","sub":"БЖД/ООхП","room":"","link":"https://us05web.zoom.us/j/3084457464?pwd=eVArd21rRkxrRzBvOEZORmdYdWlwUT09","classLink":"","zid":"308 445 7464","zcode":"31M7Lb","id":"custom_muwe46boy19fxqro7a"},"4":{"name":"Кремененко І.В.","sub":"Іноземна мова (підгрупа Пз1)","room":"","link":"https://zoom.us/j/83757550193","classLink":"","zid":"837 5755 0193","zcode":"1","id":"muu0i0ywgpmjriag0qh"}},"2":{"1":{"name":"Чумак Віталій Миколайович","sub":"Технології (Основи підприємницької діяльності)","room":"","link":"https://us05web.zoom.us/j/86341557769?pwd=EKTcw8u0xrtC6VlCUAdF0BNrDVRXc1.1","classLink":"","zid":"86341557769","zcode":"2kFaeZ","id":"muu0f028hu295sho92o"},"2":{"name":"Каплун О.А.","sub":"Біологія і екологія","room":"","link":"https://zoom.us/j/5698912902","classLink":"https://classroom.google.com/c/ODg0ODgwMTQ1MDM1","zid":"569 891 2902","zcode":"321","id":"muu0fglq8zeq7cp4ypl"},"3":{"name":"Горбатенко П.П.","sub":"БЖД/ООхП","room":"","link":"","classLink":"","zid":"","zcode":"","id":"muu4jw55izatmf3p3p"},"4":{"name":"Ігнатьєва Н.В.","sub":"Іноземна мова (підгрупа Пз2)","room":"","link":"https://meet.google.com/ghe-fvss-rwo","classLink":"","zid":"ghe-fvss-rwo","zcode":"","id":"muu0ie9jfi0c5m6vqud"}}},"2026-10-07":{"1":{"2":{"name":"Сотнікова С.В.","sub":"Теоретичні основи електротехніки та електроніки (ТЕКС)","room":"","link":"https://zoom.us/j/8436470819","classLink":"https://classroom.google.com/c/ODc2OTk2MDQ1NTYx","zid":"843 647 0819","zcode":"284088","id":"muu0j2ydpqxqumgtu8f"},"3":{"name":"Данов Сергій Олександрович","sub":"Основи програмування","room":"","link":"https://meet.google.com/eue-fsoe-mjg","classLink":"https://classroom.google.com/c/ODEyOTgyNTc2MTM2","zid":"eue-fsoe-mjg","zcode":"","id":"muu0bg61jq0gu8r81m"},"4":{"name":"Кушнарьов Максим Олександрович","sub":"Інформаційні технології","room":"","link":"https://meet.google.com/tjt-qger-inx","classLink":"","zid":"","zcode":"","id":"muu09iebzb92dy5qsdq"},"5":{"name":"Горбатенко П.П.","sub":"БЖД/ООхП","room":"","link":"","classLink":"","zid":"","zcode":"","id":"muu4jw55izatmf3p3p"}},"2":{"2":{"name":"Сотнікова С.В.","sub":"Теоретичні основи електротехніки та електроніки (ТЕКС)","room":"","link":"https://zoom.us/j/8436470819","classLink":"https://classroom.google.com/c/ODc2OTk2MDQ1NTYx","zid":"843 647 0819","zcode":"284088","id":"muu0j2ydpqxqumgtu8f"},"3":{"name":"Данов Сергій Олександрович","sub":"Основи програмування","room":"","link":"https://meet.google.com/eue-fsoe-mjg","classLink":"https://classroom.google.com/c/ODEyOTgyNTc2MTM2","zid":"eue-fsoe-mjg","zcode":"","id":"muu0bg61jq0gu8r81m"},"4":{"name":"Кушнарьов Максим Олександрович","sub":"Інформаційні технології","room":"","link":"https://meet.google.com/tjt-qger-inx","classLink":"","zid":"","zcode":"","id":"muu09iebzb92dy5qsdq"},"5":{"name":"Горбатенко П.П.","sub":"БЖД/ООхП","room":"","link":"","classLink":"","zid":"","zcode":"","id":"muu4jw55izatmf3p3p"}}},"2026-10-08":{"1":{"1":{"name":"Шевченко Кирило Володимирович","sub":"Хімія","room":"","link":"https://zoom.us/j/6724977298","classLink":"https://classroom.google.com/c/ODc2MTMyNDU4Nzg5","zid":"672 497 7298","zcode":"eLyS84","id":"muu0adaqlb801nebkf8"},"2":{"name":"Сотнікова С.В.","sub":"Теоретичні основи електротехніки та електроніки (ТЕКС)","room":"","link":"https://zoom.us/j/8436470819","classLink":"https://classroom.google.com/c/ODc2OTk2MDQ1NTYx","zid":"843 647 0819","zcode":"284088","id":"muu0j2ydpqxqumgtu8f"},"3":{"name":"Панова О.С.","sub":"Історія України (шкільна)","room":"","link":"https://zoom.us/j/9389588159","classLink":"https://classroom.google.com/c/ODc2NzAxMDgyMDE3","zid":"938 958 8159","zcode":"401","id":"muu0jdlysmw2uxiqpy"},"4":{"name":"Кушнарьов Максим Олександрович","sub":"Інформаційні технології","room":"","link":"https://meet.google.com/tjt-qger-inx","classLink":"","zid":"","zcode":"","id":"muu09iebzb92dy5qsdq"}},"2":{"1":{"name":"Шевченко Кирило Володимирович","sub":"Хімія","room":"","link":"https://zoom.us/j/6724977298","classLink":"https://classroom.google.com/c/ODc2MTMyNDU4Nzg5","zid":"672 497 7298","zcode":"eLyS84","id":"muu0adaqlb801nebkf8"},"2":{"name":"Сотнікова С.В.","sub":"Теоретичні основи електротехніки та електроніки (ТЕКС)","room":"","link":"https://zoom.us/j/8436470819","classLink":"https://classroom.google.com/c/ODc2OTk2MDQ1NTYx","zid":"843 647 0819","zcode":"284088","id":"muu0j2ydpqxqumgtu8f"},"3":{"name":"Панова О.С.","sub":"Історія України (шкільна)","room":"","link":"https://zoom.us/j/9389588159","classLink":"https://classroom.google.com/c/ODc2NzAxMDgyMDE3","zid":"938 958 8159","zcode":"401","id":"muu0jdlysmw2uxiqpy"},"4":{"name":"Кушнарьов Максим Олександрович","sub":"Інформаційні технології","room":"","link":"https://meet.google.com/tjt-qger-inx","classLink":"","zid":"","zcode":"","id":"muu09iebzb92dy5qsdq"}}},"2026-10-09":{"1":{"1":{"name":"Шевченко Кирило Володимирович","sub":"Хімія","room":"","link":"https://zoom.us/j/6724977298","classLink":"https://classroom.google.com/c/ODc2MTMyNDU4Nzg5","zid":"672 497 7298","zcode":"eLyS84","id":"muu0adaqlb801nebkf8"},"2":{"name":"Волкова Л.В.","sub":"Українська мова","room":"","link":"https://zoom.us/j/9651861969","classLink":"https://classroom.google.com/c/Nzc1MjkyNzAzODIz","zid":"965 186 1969","zcode":"1234","id":"muu0kwqwi3bgeki9xtn"},"3":{"name":"Волкова Л.В.","sub":"Українська література","room":"","link":"https://zoom.us/j/9651861969","classLink":"https://classroom.google.com/c/Nzc1MjkyNzAzODIz","zid":"965 186 1969","zcode":"1234","id":"muu0ld6c0ntssgqjn7s"},"4":{"name":"Панова О.С.","sub":"Історія України (шкільна)","room":"","link":"https://zoom.us/j/9389588159","classLink":"https://classroom.google.com/c/ODc2NzAxMDgyMDE3","zid":"938 958 8159","zcode":"401","id":"muu0jdlysmw2uxiqpy"}},"2":{"1":{"name":"Шевченко Кирило Володимирович","sub":"Хімія","room":"","link":"https://zoom.us/j/6724977298","classLink":"https://classroom.google.com/c/ODc2MTMyNDU4Nzg5","zid":"672 497 7298","zcode":"eLyS84","id":"muu0adaqlb801nebkf8"},"2":{"name":"Волкова Л.В.","sub":"Українська мова","room":"","link":"https://zoom.us/j/9651861969","classLink":"https://classroom.google.com/c/Nzc1MjkyNzAzODIz","zid":"965 186 1969","zcode":"1234","id":"muu0kwqwi3bgeki9xtn"},"3":{"name":"Волкова Л.В.","sub":"Українська література","room":"","link":"https://zoom.us/j/9651861969","classLink":"https://classroom.google.com/c/Nzc1MjkyNzAzODIz","zid":"965 186 1969","zcode":"1234","id":"muu0ld6c0ntssgqjn7s"},"4":{"name":"Панова О.С.","sub":"Історія України (шкільна)","room":"","link":"https://zoom.us/j/9389588159","classLink":"https://classroom.google.com/c/ODc2NzAxMDgyMDE3","zid":"938 958 8159","zcode":"401","id":"muu0jdlysmw2uxiqpy"}}},"2026-10-12":{"1":{},"2":{}},"2026-10-13":{"1":{},"2":{}},"2026-10-14":{"1":{},"2":{}},"2026-10-15":{"1":{},"2":{}},"2026-10-16":{"1":{},"2":{}},"2026-10-19":{"1":{"1":{"name":"Кушнарьов Максим Олександрович","sub":"Інформаційні технології","room":"","link":"https://meet.google.com/tjt-qger-inx","classLink":"","zid":"","zcode":"","id":"muu09iebzb92dy5qsdq"},"2":{"name":"Сотнікова С.В.","sub":"Теоретичні основи електротехніки та електроніки (ТЕКС)","room":"","link":"https://zoom.us/j/8436470819","classLink":"https://classroom.google.com/c/ODc2OTk2MDQ1NTYx","zid":"843 647 0819","zcode":"284088","id":"muu0j2ydpqxqumgtu8f"},"3":{"name":"Малік І.М.","sub":"Фізична культура і здоров’я","room":"","link":"https://zoom.us/j/83483862050","classLink":"https://classroom.google.com/c/Nzc0NzI4ODQ3MTA3","zid":"83483862050","zcode":"101967","id":"muu0dcx6305dgit9b4n"},"4":{"name":"Мілютіна О.С.","sub":"Математика","room":"","link":"https://zoom.us/j/9783579002","classLink":"https://classroom.google.com/c/ODc4MDQyNDEyNDQ3","zid":"978 357 9002","zcode":"211047","id":"muu0ec5ioxsunlfjxad"}},"2":{"1":{"name":"Кушнарьов Максим Олександрович","sub":"Інформаційні технології","room":"","link":"https://meet.google.com/tjt-qger-inx","classLink":"","zid":"","zcode":"","id":"muu09iebzb92dy5qsdq"},"2":{"name":"Сотнікова С.В.","sub":"Теоретичні основи електротехніки та електроніки (ТЕКС)","room":"","link":"https://zoom.us/j/8436470819","classLink":"https://classroom.google.com/c/ODc2OTk2MDQ1NTYx","zid":"843 647 0819","zcode":"284088","id":"muu0j2ydpqxqumgtu8f"},"3":{"name":"Малік І.М.","sub":"Фізична культура і здоров’я","room":"","link":"https://zoom.us/j/83483862050","classLink":"https://classroom.google.com/c/Nzc0NzI4ODQ3MTA3","zid":"83483862050","zcode":"101967","id":"muu0dcx6305dgit9b4n"},"4":{"name":"Мілютіна О.С.","sub":"Математика","room":"","link":"https://zoom.us/j/9783579002","classLink":"https://classroom.google.com/c/ODc4MDQyNDEyNDQ3","zid":"978 357 9002","zcode":"211047","id":"muu0ec5ioxsunlfjxad"}}},"2026-10-20":{"1":{},"2":{}},"2026-10-21":{"1":{},"2":{}},"2026-10-22":{"1":{},"2":{}},"2026-10-23":{"1":{},"2":{}},"2026-10-26":{"1":{},"2":{}},"2026-10-27":{"1":{},"2":{}},"2026-10-28":{"1":{},"2":{}},"2026-10-29":{"1":{},"2":{}},"2026-10-30":{"1":{},"2":{}},"2026-11-02":{"1":{},"2":{}},"2026-11-03":{"1":{},"2":{}},"2026-11-04":{"1":{},"2":{}},"2026-11-05":{"1":{},"2":{}},"2026-11-06":{"1":{},"2":{}},"2026-11-09":{"1":{},"2":{}},"2026-11-10":{"1":{},"2":{}},"2026-11-11":{"1":{},"2":{}},"2026-11-12":{"1":{},"2":{}},"2026-11-13":{"1":{},"2":{}},"2026-11-16":{"1":{},"2":{}},"2026-11-17":{"1":{},"2":{}},"2026-11-18":{"1":{},"2":{}},"2026-11-19":{"1":{},"2":{}},"2026-11-20":{"1":{},"2":{}},"2026-11-23":{"1":{},"2":{}},"2026-11-24":{"1":{},"2":{}},"2026-11-25":{"1":{},"2":{}},"2026-11-26":{"1":{},"2":{}},"2026-11-27":{"1":{},"2":{}},"2026-11-30":{"1":{},"2":{}},"2026-12-01":{"1":{},"2":{}},"2026-12-02":{"1":{},"2":{}},"2026-12-03":{"1":{},"2":{}},"2026-12-04":{"1":{},"2":{}},"2026-12-07":{"1":{},"2":{}},"2026-12-08":{"1":{},"2":{}},"2026-12-09":{"1":{},"2":{}},"2026-12-10":{"1":{},"2":{}},"2026-12-11":{"1":{},"2":{}},"2026-12-14":{"1":{},"2":{}},"2026-12-15":{"1":{},"2":{}},"2026-12-16":{"1":{},"2":{}},"2026-12-17":{"1":{},"2":{}},"2026-12-18":{"1":{},"2":{}},"2026-12-21":{"1":{},"2":{}},"2026-12-22":{"1":{},"2":{}},"2026-12-23":{"1":{},"2":{}},"2026-12-24":{"1":{},"2":{}},"2026-12-25":{"1":{},"2":{}}};
-            const TIMINGS = [{"s":"08:30","e":"09:50"},{"s":"10:00","e":"11:20"},{"s":"11:40","e":"13:00"},{"s":"13:10","e":"14:30"},{"s":"14:40","e":"16:00"},{"s":"16:10","e":"17:30"}];
-            const P = document.getElementById('p');
-            
-            function fmt(dObj) {
-                return dObj.getFullYear() + '-' + String(dObj.getMonth()+1).padStart(2,'0') + '-' + String(dObj.getDate()).padStart(2,'0');
-            }
-            
-            window.cp = function(txt, el) {
-                navigator.clipboard.writeText(txt).then(() => {
-                    const orig = el.innerHTML;
-                    el.innerHTML = 'Скопійовано ✓';
-                    el.style.color = '#3fb950';
-                    el.style.borderColor = '#3fb950';
-                    setTimeout(() => { el.innerHTML = orig; el.style.color = ''; el.style.borderColor = ''; }, 1500);
-                });
-            };
+/* ---------- тиждень ---------- */
+.weekbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 12px;margin:22px 0 6px}
+.wb-left,.wb-right{display:flex;align-items:center}
+.wb-left{gap:2px}
+.wb-left b{font-size:15px;font-weight:600;margin-right:6px}
+.wb-right{gap:16px}
+.arrow{width:30px;height:30px;display:grid;place-items:center;padding:0;border:0;border-radius:8px;background:none;color:var(--accent);cursor:pointer}
+.arrow:hover{background:var(--accent-bg)}
+.arrow svg{width:16px;height:16px}
+.link{position:relative;display:inline-flex;align-items:center;padding:4px 0;border:0;background:none;font-size:14px;color:var(--accent);cursor:pointer}
+.link:hover{opacity:.75}
+.link svg{width:20px;height:20px}
+.link input{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none}
 
-            if(P) {
-                P.value = fmt(new Date());
-                P.addEventListener('change', R);
-            }
-            
-            setInterval(checkLive, 1000);
-            
-            function setDate(offset) {
-                const d = new Date();
-                d.setDate(d.getDate() + offset);
-                if(P) {
-                    P.value = fmt(d);
-                    R();
-                }
-            }
+.strip{display:grid;grid-template-columns:repeat(7,1fr);padding:2px 0 12px;border-bottom:1px solid var(--sep)}
+.day{display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0;border:0;background:none;cursor:pointer}
+.day .wd{font-size:11.5px;font-weight:500;color:var(--muted)}
+.day .n{
+  width:36px;height:36px;display:grid;place-items:center;border-radius:50%;
+  font-size:17px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--text);
+}
+.day:not(.has) .n{color:var(--dim)}
+.day.today .n{color:var(--accent);font-weight:700}
+.day.sel .n{background:var(--accent);color:#fff;font-weight:700}
+.day.sel .wd{color:var(--text)}
+.day:not(.sel):hover .n{background:var(--accent-bg)}
 
-            function R() {
-                if(!P) return;
-                const d = P.value;
-                const l1 = document.getElementById('l1');
-                const l2El = document.getElementById('l2');
-                if(l1) l1.innerHTML = '';
-                if(l2El) l2El.innerHTML = '';
-                
-                const today = new Date();
-                const todayStr = fmt(today);
-                const tom = new Date(); tom.setDate(tom.getDate()+1);
-                const tomStr = fmt(tom);
-                
-                const qbToday = document.getElementById('qb-today');
-                const qbTom = document.getElementById('qb-tom');
-                if(qbToday) qbToday.className = 'qb' + (d === todayStr ? ' active' : '');
-                if(qbTom) qbTom.className = 'qb' + (d === tomStr ? ' active' : '');
-                
-                if(!d) {
-                    if(l1) l1.innerHTML = '<div class="nodata">Оберіть дату для відображення розкладу</div>';
-                    if(l2El) l2El.innerHTML = '<div class="nodata">Оберіть дату для відображення розкладу</div>';
-                    return;
-                }
-                
-                const parts = d.split('-');
-                const o = new Date(parts[0], parts[1]-1, parts[2]);
-                
-                const ds = ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"];
-                const ms = ["січня", "лютого", "березня", "квітня", "травня", "червня", "липня", "серпня", "вересня", "жовтня", "листопада", "грудня"];
-                
-                const dtEl = document.getElementById('dt');
-                if(dtEl) dtEl.innerHTML = ds[o.getDay()] + ' <span class="d-h">' + o.getDate() + ' ' + ms[o.getMonth()] + '</span>';
-                
-                if(!DB[d]) {
-                    if(l1) l1.innerHTML = '<div class="nodata">Заняття відсутні (Вихідний)</div>';
-                    if(l2El) l2El.innerHTML = '<div class="nodata">Заняття відсутні (Вихідний)</div>';
-                    return;
-                }
-                
-                RC(l1, DB[d][1], 1, d);
-                if(l2El) RC(l2El, DB[d][2], 2, d);
-                
-                checkLive();
-            }
-            
-            function RC(c, dData, g, dateKey) {
-                for(let i=1; i<=6; i++) {
-                    const l = (dData && dData[i]) ? dData[i] : null;
-                    const t = (TIMINGS && TIMINGS[i-1]) ? TIMINGS[i-1] : {s:'', e:''};
-                    const timeHTML = (t.s || t.e) ? '<div class="n-time">' + t.s + '<br>' + t.e + '</div>' : '';
-                    
-                    const div = document.createElement('div');
-                    div.dataset.ts = t.s;
-                    div.dataset.te = t.e;
-                    
-                    if(!l) {
-                        div.className = 'card emp slot-card';
-                        div.innerHTML = '<div class="head"><div class="n-col"><div class="n">' + i + '</div>' + timeHTML + '</div><div class="win">Вільний час (Вікно)</div></div>';
-                    } else {
-                        div.className = 'card slot-card f' + g;
-                        let acts = '<div class="card-actions">';
-                        
-                        if(l.link) {
-                            acts += '<a href="' + l.link + '" target="_blank" class="btn">Приєднатися (Онлайн)</a>';
-                        }
-                        
-                        if(l.classLink) {
-                            acts += '<a href="' + l.classLink + '" target="_blank" class="btn" style="background:#9d7cff; border-color:#9d7cff;">Классрум</a>';
-                        }
-                        
-                        if(l.zid || l.zcode) {
-                            acts += '<div style="display:flex; gap:10px; flex-wrap:wrap;">';
-                            if(l.zid) acts += '<div class="copy-b" onclick="cp(\'' + l.zid + '\', this)" title="Копіювати ID">ID: ' + l.zid + ' 📋</div>';
-                            if(l.zcode) acts += '<div class="copy-b" onclick="cp(\'' + l.zcode + '\', this)" title="Копіювати код">Код: ' + l.zcode + ' 📋</div>';
-                            acts += '</div>';
-                        }
-                        
-                        acts += '</div>';
-                        
-                        div.innerHTML = '<div class="live-badge">Поточне заняття <span style="opacity:0.5; margin:0 4px">•</span> <span class="c-timer" style="font-weight:600; font-size:0.8rem;">...</span></div><div class="head"><div class="n-col"><div class="n">' + i + '</div>' + timeHTML + '</div><div style="flex:1"><div class="tit">' + l.sub + '</div><div class="meta"><div class="meta-row"><span>' + l.name + '</span><span>' + (l.room ? l.room : '') + '</span></div></div></div></div>' + acts;
-                    }
-                    c.appendChild(div);
-                }
-            }
-            
-            function checkLive() {
-                const banner = document.getElementById('breakBanner');
-                const timerEl = document.getElementById('breakTimer');
+/* ---------- день ---------- */
+.dayhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:22px 2px 12px}
+.dayhead h2{margin:0;font-size:22px;line-height:1.2;font-weight:700}
+.dayhead p{margin:3px 0 0;font-size:13.5px;color:var(--muted)}
+.dayhead .rel{font-size:14px;font-weight:600;color:var(--accent);white-space:nowrap}
 
-                if(!P) return;
-                const d = P.value;
-                const todayStr = fmt(new Date());
-                
-                if (d !== todayStr || !DB[d]) {
-                    banner.classList.remove('show');
-                    return;
-                }
-                
-                const now = new Date();
-                const currentSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-                let isClassLive = false;
-                
-                document.querySelectorAll('.slot-card').forEach(card => {
-                    card.classList.remove('live');
-                    const ts = card.dataset.ts;
-                    const te = card.dataset.te;
-                    
-                    if(ts && te) {
-                        const [sh, sm] = ts.split(':').map(Number);
-                        const [eh, em] = te.split(':').map(Number);
-                        const startSec = sh * 3600 + sm * 60;
-                        const endSec = eh * 3600 + em * 60;
-                        
-                        if (currentSeconds >= startSec && currentSeconds < endSec) {
-                            card.classList.add('live');
-                            isClassLive = true;
-                            
-                            const tSpan = card.querySelector('.c-timer');
-                            if (tSpan) {
-                                const diff = endSec - currentSeconds;
-                                const h = Math.floor(diff / 3600);
-                                const m = Math.floor((diff % 3600) / 60);
-                                
-                                let timeStr = '';
-                                if (h > 0) timeStr += h + ' год ';
-                                timeStr += m + ' хв';
-                                
-                                if (diff < 60) timeStr = '< 1 хв';
-                                
-                                tSpan.innerText = timeStr;
-                            }
-                        }
-                    }
-                });
+.list{min-height:44vh}
+.list.fade{animation:fade .15s ease-out}
+@keyframes fade{from{opacity:0}}
 
-                if (!isClassLive) {
-                    let upcomingStart = null;
-                    
-                    for (let i = 0; i < TIMINGS.length; i++) {
-                        const t = TIMINGS[i];
-                        if (!t.s) continue;
-                        const [sh, sm] = t.s.split(':').map(Number);
-                        const startSec = sh * 3600 + sm * 60;
-                        if (startSec > currentSeconds) {
-                            upcomingStart = startSec;
-                            break;
-                        }
-                    }
+.colhead{display:grid;grid-template-columns:64px 1fr 1fr;gap:16px;padding:0 14px 6px;font-size:12.5px;font-weight:600;color:var(--muted)}
+.group{overflow:hidden;border-radius:12px;background:var(--row)}
+.row{position:relative;display:grid;grid-template-columns:56px minmax(0,1fr);gap:16px;padding:12px 14px}
+.row+.row{border-top:1px solid var(--sep)}
+.app[data-mode="both"] .row{grid-template-columns:64px 1fr 1fr}
+.row[data-live="now"]{background:var(--accent-bg)}
+.prog{position:absolute;left:0;bottom:0;height:2px;background:var(--accent)}
 
-                    if (upcomingStart) {
-                        const diff = upcomingStart - currentSeconds;
-                        if (diff <= 1800) { 
-                            const m = Math.floor(diff / 60).toString().padStart(2, '0');
-                            const s = (diff % 60).toString().padStart(2, '0');
-                            timerEl.innerText = m + ':' + s;
-                            
-                            if (diff <= 60) timerEl.classList.add('urgent');
-                            else timerEl.classList.remove('urgent');
+.t{font-variant-numeric:tabular-nums;line-height:1.25}
+.t small{display:block;margin-bottom:3px;font-size:11px;color:var(--dim)}
+.t b{display:block;font-size:16px;font-weight:600}
+.t span{display:block;margin-top:2px;font-size:13px;color:var(--muted)}
+.row.free{padding-top:10px;padding-bottom:10px;align-items:center}
+.row.free .t b{font-size:14px;font-weight:500;color:var(--dim)}
+.free-text{color:var(--dim);font-size:14px}
+.row.free .free-text{grid-column:2/-1}
 
-                            banner.classList.add('show');
-                        } else {
-                            banner.classList.remove('show');
-                        }
-                    } else {
-                        banner.classList.remove('show');
-                    }
-                } else {
-                    banner.classList.remove('show');
-                }
-            }
-            
-            R();
-            </script></body></html>
+.cell{min-width:0;padding-left:11px;border-left:3px solid hsl(var(--h) 55% var(--bar-l))}
+.live{margin-bottom:3px;font-size:12.5px;font-weight:600;color:var(--accent)}
+.live.soon{color:var(--muted)}
+.subj{font-size:16px;font-weight:600;line-height:1.3;overflow-wrap:anywhere}
+.sub{margin-top:2px;font-size:13.5px;color:var(--muted)}
+.exam{font-weight:600;color:var(--exam)}
+.act{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;margin-top:10px}
+.join{
+  display:inline-block;padding:8px 14px;border-radius:8px;background:var(--green);color:#fff;
+  font-size:14px;font-weight:600;text-decoration:none;
+}
+.join:hover{filter:brightness(1.12)}
+.join:active{filter:brightness(.95)}
+.cp{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 0;border:0;background:none;cursor:pointer;
+  font:12.5px/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted);
+}
+.cp:hover{color:var(--text)}
+.cp svg{width:13px;height:13px;color:var(--accent)}
+.cp.ok svg{color:var(--ok)}
+
+.empty{padding:70px 20px;text-align:center;font-size:17px;font-weight:600;color:var(--muted)}
+.empty span{display:block;margin-top:4px;font-size:13.5px;font-weight:400;color:var(--dim)}
+
+@media (max-width:480px){
+  .top h1{font-size:30px}
+  .row{gap:12px;padding:12px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app" data-mode="1">
+  <header class="top">
+    <h1>ПЗ - 11</h1>
+    <p>Осінній семестр 2026/27</p>
+  </header>
+
+  <div class="seg" id="seg" role="radiogroup" aria-label="Підгрупа">
+    <button type="button" role="radio" data-sg="1">Підгрупа 1</button>
+    <button type="button" role="radio" data-sg="2">Підгрупа 2</button>
+    <button type="button" role="radio" data-sg="both" class="wide">Обидві</button>
+  </div>
+
+  <div class="weekbar">
+    <div class="wb-left">
+      <b id="monthLabel"></b>
+      <button class="arrow" type="button" data-week="-1" aria-label="Попередній тиждень"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3 5 8l5 5"/></svg></button>
+      <button class="arrow" type="button" data-week="1" aria-label="Наступний тиждень"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3 5 5-5 5"/></svg></button>
+    </div>
+    <div class="wb-right">
+      <button class="link" type="button" id="btnToday">Сьогодні</button>
+      <button class="link" type="button" id="btnTomorrow">Завтра</button>
+      <button class="link" type="button" id="btnDate" aria-label="Обрати дату"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="14" height="12.5" rx="2.5"/><path d="M3 8.5h14M7 2.8v3M13 2.8v3"/></svg><input type="date" id="datePick" tabindex="-1" aria-label="Обрати дату"></button>
+    </div>
+  </div>
+  <div class="strip" id="strip"></div>
+
+  <div class="dayhead" id="dayHead"></div>
+  <main class="list" id="list"></main>
+</div>
+
+<script>
+/* =====================================================================
+   ПОСИЛАННЯ НА ВИКЛАДАЧІВ — тут редагуємо
+   url  — посилання для кнопки «Приєднатися (Онлайн)» (порожнє — кнопки не буде)
+   id   — ID конференції (необов'язково), code — код доступу (необов'язково)
+   ===================================================================== */
+const TEACHERS = {
+  "Кушнарьов М.О.":    { name:"Кушнарьов Максим Олександрович",  url:"https://meet.google.com/tjt-qger-inx", id:"tjt-qger-inx" },
+  "Шевченко К.":       { name:"Шевченко Кирило Володимирович",   url:"https://zoom.us/j/6724977298", id:"672 497 7298", code:"eLyS84" },
+  "Данов С.О.":        { name:"Данов Сергій Олександрович",      url:"https://meet.google.com/eue-fsoe-mjg", id:"eue-fsoe-mjg" },
+  "Малік І.М.":        { name:"Малік І.М.",                      url:"https://zoom.us/j/83483862050", id:"83483862050", code:"101967" },
+  "Мілютіна О.С.":     { name:"Мілютіна О.С.",                   url:"https://zoom.us/j/9783579002", id:"978 357 9002", code:"211047" },
+  "Чумак В.М.":        { name:"Чумак Віталій Миколайович",       url:"https://us05web.zoom.us/j/86341557769?pwd=EKTcw8u0xrtC6VlCUAdF0BNrDVRXc1.1", id:"86341557769", code:"2kFaeZ" },
+  "Каплун О.А.":       { name:"Каплун О.А.",                     url:"https://zoom.us/j/5698912902", id:"569 891 2902", code:"321" },
+  "Мирошниченко Ю.В.": { name:"Мирошниченко Ю.В.",               url:"https://meet.google.com/ogw-qguh-tyu", id:"ogw-qguh-tyu" },
+  "Горбатенко П.П.":   { name:"Горбатенко П.П.",                 url:"https://us05web.zoom.us/j/3084457464?pwd=eVArd21rRkxrRzBvOEZORmdYdWlwUT09", id:"308 445 7464", code:"31M7Lb" },
+  "Кремененко І.В.":   { name:"Кремененко І.В.",                 url:"https://zoom.us/j/83757550193", id:"837 5755 0193", code:"1" },
+  "Ігнатьєва Н.В.":    { name:"Ігнатьєва Н.В.",                  url:"https://meet.google.com/ghe-fvss-rwo", id:"ghe-fvss-rwo" },
+  "Сотнікова С.В.":    { name:"Сотнікова С.В.",                  url:"https://zoom.us/j/8436470819", id:"843 647 0819", code:"284088" },
+  "Панова О.С.":       { name:"Панова О.С.",                     url:"https://zoom.us/j/9389588159", id:"938 958 8159", code:"401" },
+  "Семенченко Т.О.":   { name:"Семенченко Т.О.",                 url:"https://zoom.us/j/7649687132", id:"764 968 7132", code:"507" },
+  "Волкова Л.В.":      { name:"Волкова Л.В.",                    url:"https://zoom.us/j/9651861969", id:"965 186 1969", code:"1234" },
+  "Корнєєва І.А.":     { name:"Корнєєва І.А.",                   url:"" }   /* посилання не надано */
+};
+
+/* Скорочення з PDF → назва предмета і колір смужки (hue 0–360) */
+const SUBJECTS = {
+  "Інф.Тех.":         { name:"Інформаційні технології", hue:239 },
+  "ТОЕтЕл (ТЕКС)":    { name:"Теоретичні основи електротехніки та електроніки (ТЕКС)", hue:211 },
+  "ОПрогр.":          { name:"Основи програмування", hue:267 },
+  "БЖД/ООхП":         { name:"БЖД/ООхП", hue:43 },
+  "Хімія":            { name:"Хімія", hue:127 },
+  "Матем.":           { name:"Математика", hue:99 },
+  "Ф-ка/астр.":       { name:"Фізика і астрономія", hue:295 },
+  "Бол.Екол.":        { name:"Біологія і екологія", hue:155 },
+  "Основи екології":  { name:"Біологія і екологія", hue:155 },
+  "Техн. (ОПідпД)":   { name:"Технології (Основи підприємницької діяльності)", hue:71 },
+  "ФКЗ":              { name:"Фізична культура і здоров’я", hue:15 },
+  "Ін.М.":            { name:"Іноземна мова", hue:323 },
+  "Іст.Укр.(шк)":     { name:"Історія України (шкільний курс)", hue:183 },
+  "Іст.Укр.":         { name:"Історія України", hue:183 },
+  "Умова":            { name:"Українська мова", hue:351 },
+  "УЛіт-ра":          { name:"Українська література", hue:351 }
+};
+const TYPES = { "Лк":"Лекція", "Пз":"Практичне заняття", "Лб":"Лабораторна робота", "ЗАЛІК":"Залік" };
+const PAIRS = [["08:30","09:50"],["10:00","11:20"],["11:40","13:00"],["13:10","14:30"],["14:40","16:00"],["16:10","17:30"]];
+
+/* Розклад з PDF (семестр 2026/2027).
+   "all" — пара для обох підгруп, "1"/"2" — різна пара для підгруп.
+   Формат пари: [предмет, тип, аудиторія, викладач] */
+const SCHEDULE = {
+  "2026-09-01": {"1":{"all":["Техн. (ОПідпД)","Лк","330","Чумак В.М."]},"2":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]}},
+  "2026-09-02": {"1":{"all":["БЖД/ООхП","Лк","318","Мирошниченко Ю.В."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["ОПрогр.","Лк","101","Данов С.О."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]}},
+  "2026-09-03": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Пз","414","Сотнікова С.В."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]}},
+  "2026-09-04": {"1":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]}},
+  "2026-09-07": {"1":{"all":["Інф.Тех.","Лб","214","Кушнарьов М.О."]},"2":{"all":["Хімія","Лк","513","Шевченко К."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-09-08": {"1":{"all":["Техн. (ОПідпД)","Лк","330","Чумак В.М."]},"2":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"3":{"all":["БЖД/ООхП","Пз","318","Мирошниченко Ю.В."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]}},
+  "2026-09-09": {"1":{"all":["БЖД/ООхП","Лк","318","Мирошниченко Ю.В."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["ОПрогр.","Лк","101","Данов С.О."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]}},
+  "2026-09-10": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лб","414","Сотнікова С.В."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]}},
+  "2026-09-11": {"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]}},
+  "2026-09-14": {"1":{"all":["Інф.Тех.","Лб","214","Кушнарьов М.О."]},"2":{"all":["ОПрогр.","Лб","101","Данов С.О."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-09-15": {"1":{"all":["Техн. (ОПідпД)","Лк","330","Чумак В.М."]},"2":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]}},
+  "2026-09-16": {"1":{"all":["БЖД/ООхП","Лк","318","Мирошниченко Ю.В."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["ОПрогр.","Лк","101","Данов С.О."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]}},
+  "2026-09-17": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Пз","414","Сотнікова С.В."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]}},
+  "2026-09-18": {"1":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]}},
+  "2026-09-21": {"1":{"all":["Інф.Тех.","Лб","214","Кушнарьов М.О."]},"2":{"all":["Хімія","Лк","513","Шевченко К."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-09-22": {"1":{"all":["Техн. (ОПідпД)","Лк","330","Чумак В.М."]},"2":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"3":{"all":["БЖД/ООхП","Пз","318","Мирошниченко Ю.В."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]}},
+  "2026-09-23": {"1":{"all":["БЖД/ООхП","Лк","318","Мирошниченко Ю.В."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["ОПрогр.","Лк","101","Данов С.О."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]}},
+  "2026-09-24": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лб","414","Сотнікова С.В."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]}},
+  "2026-09-25": {"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]}},
+  "2026-09-28": {"1":{"all":["Інф.Тех.","Пз","214","Кушнарьов М.О."]},"2":{"all":["ОПрогр.","Лб","101","Данов С.О."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-09-29": {"1":{"all":["Техн. (ОПідпД)","Лк","330","Чумак В.М."]},"2":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]}},
+  "2026-09-30": {"1":{"all":["БЖД/ООхП","Лк","318","Мирошниченко Ю.В."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["ОПрогр.","Лк","101","Данов С.О."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]}},
+  "2026-10-01": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Пз","414","Сотнікова С.В."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]}},
+  "2026-10-02": {"1":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]}},
+  "2026-10-05": {"1":{"all":["Інф.Тех.","Лб","306","Кушнарьов М.О."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лб","414","Сотнікова С.В."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-10-06": {"1":{"all":["Техн. (ОПідпД)","Лк","330","Чумак В.М."]},"2":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"3":{"all":["БЖД/ООхП","Пз","318","Горбатенко П.П."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]}},
+  "2026-10-07": {"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["ОПрогр.","Лк","217","Данов С.О."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]},"5":{"all":["БЖД/ООхП","Лк","318","Горбатенко П.П."]}},
+  "2026-10-08": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Пз","414","Сотнікова С.В."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Інф.Тех.","Лк","217","Кушнарьов М.О."]}},
+  "2026-10-09": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]},"4":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]}},
+  "2026-10-12": {"1":{"all":["Інф.Тех.","Лб","306","Кушнарьов М.О."]},"2":{"all":["ОПрогр.","Лб","101","Данов С.О."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-10-13": {"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]},"5":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"6":{"all":["Ф-ка/астр.","Лб","511","Корнєєва І.А."]}},
+  "2026-10-14": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["БЖД/ООхП","Лк","318","Горбатенко П.П."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]}},
+  "2026-10-15": {"2":{"all":["Ф-ка/астр.","Лк","506","Семенченко Т.О."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]},"5":{"all":["БЖД/ООхП","Пз","318","Горбатенко П.П."]}},
+  "2026-10-16": {"1":{"all":["Техн. (ОПідпД)","Лк","324а","Чумак В.М."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]},"4":{"all":["ТОЕтЕл (ТЕКС)","Лб","414","Сотнікова С.В."]}},
+  "2026-10-19": {"1":{"all":["Інф.Тех.","Лб","306","Кушнарьов М.О."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лб","414","Сотнікова С.В."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-10-20": {"1":{"all":["Техн. (ОПідпД)","Лк","330","Чумак В.М."]},"2":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"3":{"all":["БЖД/ООхП","Пз","318","Горбатенко П.П."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]}},
+  "2026-10-21": {"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["ОПрогр.","Лк","217","Данов С.О."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]},"5":{"all":["БЖД/ООхП","Лк","318","Горбатенко П.П."]}},
+  "2026-10-22": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Пз","414","Сотнікова С.В."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Інф.Тех.","Лк","217","Кушнарьов М.О."]}},
+  "2026-10-23": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]}},
+  "2026-10-26": {"1":{"all":["Інф.Тех.","Лб","306","Кушнарьов М.О."]},"2":{"all":["ОПрогр.","Лб","101","Данов С.О."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-10-27": {"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]},"5":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"6":{"all":["Ф-ка/астр.","Лб","511","Корнєєва І.А."]}},
+  "2026-10-28": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["БЖД/ООхП","Лк","318","Горбатенко П.П."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]}},
+  "2026-10-29": {"2":{"all":["Ф-ка/астр.","Лк","506","Семенченко Т.О."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]},"5":{"all":["БЖД/ООхП","Пз","318","Горбатенко П.П."]}},
+  "2026-10-30": {"1":{"all":["Техн. (ОПідпД)","Лк","324а","Чумак В.М."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]},"4":{"all":["ТОЕтЕл (ТЕКС)","Пз","414","Сотнікова С.В."]}},
+  "2026-11-02": {"1":{"all":["Інф.Тех.","Лб","306","Кушнарьов М.О."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лб","414","Сотнікова С.В."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-11-03": {"1":{"all":["Техн. (ОПідпД)","Лк","330","Чумак В.М."]},"2":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"3":{"all":["БЖД/ООхП","Пз","318","Горбатенко П.П."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]}},
+  "2026-11-04": {"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["ОПрогр.","Лк","217","Данов С.О."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]},"5":{"all":["БЖД/ООхП","Лк","318","Горбатенко П.П."]}},
+  "2026-11-05": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Пз","414","Сотнікова С.В."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Інф.Тех.","Пз","217","Кушнарьов М.О."]}},
+  "2026-11-06": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]}},
+  "2026-11-09": {"1":{"all":["Інф.Тех.","Лб","306","Кушнарьов М.О."]},"2":{"all":["ОПрогр.","Лб","101","Данов С.О."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-11-10": {"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]},"5":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"6":{"all":["Ф-ка/астр.","Лб","511","Корнєєва І.А."]}},
+  "2026-11-11": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["БЖД/ООхП","Лк","318","Горбатенко П.П."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]}},
+  "2026-11-12": {"2":{"all":["Ф-ка/астр.","Лк","506","Семенченко Т.О."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]},"5":{"all":["БЖД/ООхП","Пз","318","Горбатенко П.П."]}},
+  "2026-11-13": {"1":{"all":["Техн. (ОПідпД)","Лк","324а","Чумак В.М."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]},"4":{"all":["ТОЕтЕл (ТЕКС)","Лб","414","Сотнікова С.В."]}},
+  "2026-11-16": {"1":{"all":["Інф.Тех.","Лб","306","Кушнарьов М.О."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лб","414","Сотнікова С.В."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-11-17": {"1":{"all":["Техн. (ОПідпД)","Лк","330","Чумак В.М."]},"2":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"3":{"all":["БЖД/ООхП","Пз","318","Горбатенко П.П."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]}},
+  "2026-11-18": {"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["ОПрогр.","Лк","217","Данов С.О."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]},"5":{"all":["БЖД/ООхП","Лк","318","Горбатенко П.П."]}},
+  "2026-11-19": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Пз","414","Сотнікова С.В."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Інф.Тех.","Пз","217","Кушнарьов М.О."]}},
+  "2026-11-20": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]}},
+  "2026-11-23": {"1":{"all":["Інф.Тех.","Лб","306","Кушнарьов М.О."]},"2":{"all":["ОПрогр.","Лб","101","Данов С.О."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-11-24": {"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]},"5":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"6":{"all":["Ф-ка/астр.","Лб","511","Корнєєва І.А."]}},
+  "2026-11-25": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["БЖД/ООхП","Лк","318","Горбатенко П.П."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]}},
+  "2026-11-26": {"2":{"all":["Ф-ка/астр.","Лк","506","Семенченко Т.О."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]},"5":{"all":["БЖД/ООхП","Пз","318","Горбатенко П.П."]}},
+  "2026-11-27": {"1":{"all":["Техн. (ОПідпД)","Лк","324а","Чумак В.М."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]}},
+  "2026-11-30": {"1":{"all":["Інф.Тех.","Лб","306","Кушнарьов М.О."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лб","414","Сотнікова С.В."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-12-01": {"1":{"all":["Техн. (ОПідпД)","Лк","330","Чумак В.М."]},"2":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"3":{"all":["БЖД/ООхП","Пз","318","Горбатенко П.П."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]}},
+  "2026-12-02": {"1":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["ОПрогр.","Лк","217","Данов С.О."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]}},
+  "2026-12-03": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Пз","414","Сотнікова С.В."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Інф.Тех.","Лб","217","Кушнарьов М.О."]}},
+  "2026-12-04": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]}},
+  "2026-12-07": {"1":{"all":["Інф.Тех.","Лб","306","Кушнарьов М.О."]},"2":{"all":["ОПрогр.","Лб","101","Данов С.О."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-12-08": {"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]},"5":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"6":{"all":["Ф-ка/астр.","Лб","511","Корнєєва І.А."]}},
+  "2026-12-09": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","Лк","414","Сотнікова С.В."]},"3":{"all":["БЖД/ООхП","Лк","318","Горбатенко П.П."]},"4":{"all":["Інф.Тех.","Лк","101","Кушнарьов М.О."]}},
+  "2026-12-10": {"2":{"all":["Ф-ка/астр.","Лк","506","Семенченко Т.О."]},"3":{"all":["Іст.Укр.(шк)","Лк","401","Панова О.С."]},"4":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]},"5":{"all":["БЖД/ООхП","Пз","318","Горбатенко П.П."]}},
+  "2026-12-11": {"1":{"all":["Іст.Укр.","ЗАЛІК","401","Панова О.С."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]}},
+  "2026-12-14": {"1":{"all":["Ф-ка/астр.","Лк","507","Семенченко Т.О."]},"2":{"all":["Матем.","Лк","515","Мілютіна О.С."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Інф.Тех.","ЗАЛІК","308","Кушнарьов М.О."]}},
+  "2026-12-15": {"1":{"all":["Техн. (ОПідпД)","Лк","330","Чумак В.М."]},"2":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"3":{"all":["Хімія","Лк","513","Шевченко К."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]}},
+  "2026-12-16": {"1":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-12-17": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["ТОЕтЕл (ТЕКС)","ЗАЛІК","414","Сотнікова С.В."]},"3":{"all":["Техн. (ОПідпД)","Лк","506","Чумак В.М."]},"5":{"all":["БЖД/ООхП","ЗАЛІК","318","Горбатенко П.П."]}},
+  "2026-12-18": {"1":{"all":["Техн. (ОПідпД)","Пз","506","Чумак В.М."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]}},
+  "2026-12-21": {"1":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"2":{"all":["Хімія","Лк","513","Шевченко К."]},"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"all":["Матем.","Лк","515","Мілютіна О.С."]}},
+  "2026-12-22": {"3":{"all":["ФКЗ","Пз","102","Малік І.М."]},"4":{"1":["Ін.М.","Пз","105","Кремененко І.В."],"2":["Ін.М.","Пз","104","Ігнатьєва Н.В."]},"5":{"all":["Бол.Екол.","Лк","321","Каплун О.А."]},"6":{"all":["Ф-ка/астр.","Лб","511","Корнєєва І.А."]}},
+  "2026-12-23": {"1":{"all":["Хімія","Лк","513","Шевченко К."]},"2":{"all":["Основи екології","ЗАЛІК","321","Каплун О.А."]}},
+  "2026-12-24": {"2":{"all":["Ф-ка/астр.","Лк","506","Семенченко Т.О."]}},
+  "2026-12-25": {"1":{"all":["ФКЗ","Пз","102","Малік І.М."]},"2":{"all":["Умова","Пз","501","Волкова Л.В."]},"3":{"all":["УЛіт-ра","Лк","501","Волкова Л.В."]},"4":{"all":["ОПрогр.","ЗАЛІК","412","Данов С.О."]}}
+};
+
+/* ===================================================================== */
+const WEEKDAYS = ["Неділя","Понеділок","Вівторок","Середа","Четвер","П’ятниця","Субота"];
+const SHORT = ["Нд","Пн","Вт","Ср","Чт","Пт","Сб"];
+const MONTHS = ["січня","лютого","березня","квітня","травня","червня","липня","серпня","вересня","жовтня","листопада","грудня"];
+const MONTHS_NOM = ["Січень","Лютий","Березень","Квітень","Травень","Червень","Липень","Серпень","Вересень","Жовтень","Листопад","Грудень"];
+const SEM_START = "2026-09-01", SEM_END = "2026-12-27";
+
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2,"0");
+const toISO = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const fromISO = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
+const addDays = (iso, n) => { const d = fromISO(iso); return toISO(new Date(d.getFullYear(), d.getMonth(), d.getDate()+n)); };
+const mins = t => { const [h,m] = t.split(":").map(Number); return h*60+m; };
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const plural = (n, f) => { const a = n%10, b = n%100; return `${n} ${a===1 && b!==11 ? f[0] : (a>=2 && a<=4 && (b<10 || b>=20) ? f[1] : f[2])}`; };
+const dur = m => { const h = Math.floor(m/60), r = m%60; return h ? `${h} год${r ? " "+r+" хв" : ""}` : `${r} хв`; };
+
+const ICON_COPY = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>';
+const ICON_CHECK = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 0 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"/></svg>';
+
+/* ---------- стан ---------- */
+const wideMQ = window.matchMedia("(min-width: 900px)");
+let pref = "1";
+try { const s = localStorage.getItem("pz11-subgroup"); if (s === "1" || s === "2" || s === "both") pref = s; } catch (e) {}
+const mode = () => (pref === "both" && !wideMQ.matches) ? "1" : pref;
+let cur = toISO(new Date());
+let lastList = "";
+
+/* ---------- «зараз / далі» ---------- */
+function liveInfo(iso, anyLesson) {
+  const now = new Date();
+  if (iso !== toISO(now)) return {};
+  const nm = now.getHours()*60 + now.getMinutes() + now.getSeconds()/60;
+  for (let p = 1; p <= PAIRS.length; p++) {
+    const a = mins(PAIRS[p-1][0]), b = mins(PAIRS[p-1][1]);
+    if (anyLesson[p-1] && nm >= a && nm < b) return { [p]: { state:"now", left:Math.ceil(b-nm), pct:(nm-a)/(b-a) } };
+  }
+  for (let p = 1; p <= PAIRS.length; p++) {
+    const a = mins(PAIRS[p-1][0]);
+    if (anyLesson[p-1] && a > nm) return { [p]: { state:"next", wait:Math.ceil(a-nm) } };
+  }
+  return {};
+}
+
+/* ---------- розмітка ---------- */
+const cp = (label, value) => value
+  ? `<button class="cp" type="button" data-copy="${esc(value)}" title="Скопіювати" aria-label="Скопіювати ${label}"><span>${label} ${esc(value)}</span><i>${ICON_COPY}</i></button>`
+  : "";
+
+function cellHTML(lesson, live) {
+  const [subj, type, room, tKey] = lesson;
+  const S = SUBJECTS[subj] || { name: subj, hue: 260 };
+  const T = TEACHERS[tKey] || { name: tKey, url: "" };
+  const kind = type === "ЗАЛІК" ? `<span class="exam">Залік</span>` : esc(TYPES[type] || type);
+  let h = `<div class="cell" style="--h:${S.hue}">`;
+  if (live) h += live.state === "now" ? `<div class="live">Зараз · ще ${dur(live.left)}</div>` : `<div class="live soon">Далі · через ${dur(live.wait)}</div>`;
+  h += `<div class="subj">${esc(S.name)}</div>`;
+  h += `<div class="sub">${esc(T.name || tKey)}</div>`;
+  h += `<div class="sub">${kind} · ауд. ${esc(room)}</div>`;
+  if (T.url) {
+    h += `<div class="act"><a class="join" href="${esc(T.url)}" target="_blank" rel="noopener noreferrer">Приєднатися (Онлайн)</a>${cp("ID", T.id)}${cp("Код", T.code)}</div>`;
+  }
+  return h + `</div>`;
+}
+
+function renderStrip() {
+  const d = fromISO(cur), dow = (d.getDay()+6)%7, today = toISO(new Date());
+  $("monthLabel").textContent = `${MONTHS_NOM[d.getMonth()]} ${d.getFullYear()}`;
+  let h = "";
+  for (let i = 0; i < 7; i++) {
+    const dd = new Date(d.getFullYear(), d.getMonth(), d.getDate()-dow+i), k = toISO(dd);
+    h += `<button class="day${k===cur?" sel":""}${k===today?" today":""}${SCHEDULE[k]?" has":""}" type="button" data-iso="${k}" aria-pressed="${k===cur}" aria-label="${WEEKDAYS[dd.getDay()]}, ${dd.getDate()} ${MONTHS[dd.getMonth()]}"><span class="wd">${SHORT[dd.getDay()]}</span><span class="n">${dd.getDate()}</span></button>`;
+  }
+  $("strip").innerHTML = h;
+}
+
+function renderList() {
+  const m = mode(), sgs = m === "both" ? ["1","2"] : [m], both = sgs.length === 2;
+  const day = SCHEDULE[cur] || null;
+  $("app").dataset.mode = m;
+
+  const rows = [];
+  if (day) {
+    for (let p = 1; p <= PAIRS.length; p++) {
+      const entry = day[p] || {};
+      rows.push(sgs.map(sg => entry[sg] || entry.all || null));
+    }
+  }
+  const any = rows.map(r => r.some(Boolean));
+  const live = day ? liveInfo(cur, any) : {};
+
+  /* заголовок дня */
+  const dt = fromISO(cur), now = new Date();
+  const tomorrow = toISO(new Date(now.getFullYear(), now.getMonth(), now.getDate()+1));
+  const rel = cur === toISO(now) ? "Сьогодні" : (cur === tomorrow ? "Завтра" : "");
+  let sum = "";
+  if (any.some(Boolean)) {
+    const idx = any.map((v,i) => v ? i : -1).filter(i => i >= 0);
+    sum = `${plural(idx.length, ["пара","пари","пар"])} · ${PAIRS[idx[0]][0]}–${PAIRS[idx[idx.length-1]][1]}`;
+  }
+  $("dayHead").innerHTML = `<div><h2>${WEEKDAYS[dt.getDay()]}, ${dt.getDate()} ${MONTHS[dt.getMonth()]}</h2>${sum ? `<p>${sum}</p>` : ""}</div>${rel ? `<span class="rel">${rel}</span>` : ""}`;
+
+  /* список пар */
+  let html = "";
+  if (!day) {
+    const weekend = dt.getDay() === 0 || dt.getDay() === 6;
+    const note = weekend ? "Вихідний" : (cur < SEM_START || cur > SEM_END ? "Поза розкладом семестру" : "");
+    html = `<div class="empty">Занять немає${note ? `<span>${note}</span>` : ""}</div>`;
+  } else {
+    if (both) html += `<div class="colhead"><span></span><span>Підгрупа 1</span><span>Підгрупа 2</span></div>`;
+    html += `<div class="group">`;
+    rows.forEach((cells, i) => {
+      const p = i+1, [from, to] = PAIRS[p-1], lv = live[p];
+      if (!any[i]) {
+        html += `<div class="row free"><div class="t"><b>${from}</b></div><span class="free-text">Вільний час (Вікно)</span></div>`;
+        return;
+      }
+      const inner = cells.map(l => l ? cellHTML(l, lv) : `<span class="free-text">Вільний час (Вікно)</span>`).join("");
+      html += `<div class="row"${lv ? ` data-live="${lv.state}"` : ""}><div class="t"><small>${p} пара</small><b>${from}</b><span>${to}</span></div>${inner}` +
+        (lv && lv.state === "now" ? `<i class="prog" style="width:${Math.round(lv.pct*100)}%"></i>` : "") + `</div>`;
+    });
+    html += `</div>`;
+  }
+  if (html !== lastList) { $("list").innerHTML = html; lastList = html; }
+}
+
+function renderSeg() {
+  const m = mode();
+  document.querySelectorAll("#seg button").forEach(b => b.setAttribute("aria-checked", String(b.dataset.sg === m)));
+}
+
+function render() { renderStrip(); renderList(); renderSeg(); $("datePick").value = cur; }
+
+function go(iso) {
+  const changed = iso !== cur;
+  cur = iso; render();
+  if (changed) { const l = $("list"); l.classList.remove("fade"); void l.offsetWidth; l.classList.add("fade"); }
+}
+
+/* ---------- події ---------- */
+$("strip").addEventListener("click", e => { const b = e.target.closest(".day"); if (b) go(b.dataset.iso); });
+document.querySelectorAll("[data-week]").forEach(b => b.addEventListener("click", () => go(addDays(cur, 7*Number(b.dataset.week)))));
+$("seg").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  pref = b.dataset.sg;
+  try { localStorage.setItem("pz11-subgroup", pref); } catch (err) {}
+  lastList = ""; render();
+});
+$("btnToday").addEventListener("click", () => go(toISO(new Date())));
+$("btnTomorrow").addEventListener("click", () => { const n = new Date(); go(toISO(new Date(n.getFullYear(), n.getMonth(), n.getDate()+1))); });
+$("btnDate").addEventListener("click", () => {
+  const i = $("datePick");
+  try { i.showPicker(); } catch (err) { i.focus(); i.click(); }
+});
+$("datePick").addEventListener("change", e => { if (e.target.value) go(e.target.value); });
+wideMQ.addEventListener("change", () => { lastList = ""; render(); });
+
+document.addEventListener("keydown", e => {
+  if (e.target.closest("input,textarea,select") || e.altKey || e.ctrlKey || e.metaKey) return;
+  if (e.key === "ArrowLeft") go(addDays(cur, -1));
+  if (e.key === "ArrowRight") go(addDays(cur, 1));
+});
+
+let sx = 0, sy = 0, st = 0;
+$("list").addEventListener("touchstart", e => { const t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); }, { passive:true });
+$("list").addEventListener("touchend", e => {
+  const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+  if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)*1.6 && Date.now() - st < 600) go(addDays(cur, dx < 0 ? 1 : -1));
+}, { passive:true });
+
+document.addEventListener("click", async e => {
+  const btn = e.target.closest("[data-copy]");
+  if (!btn) return;
+  const text = btn.dataset.copy, ic = btn.querySelector("i");
+  try { await navigator.clipboard.writeText(text); }
+  catch (err) {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); } catch (e2) {}
+    ta.remove();
+  }
+  btn.classList.add("ok"); ic.innerHTML = ICON_CHECK;
+  setTimeout(() => { btn.classList.remove("ok"); ic.innerHTML = ICON_COPY; }, 1200);
+});
+
+/* оновлення «Зараз / Далі» раз на 30 с */
+setInterval(() => { if (!document.hidden) render(); }, 30000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) render(); });
+
+render();
+</script>
+</body>
+</html>

@@ -119,6 +119,8 @@ button{font-family:inherit;color:inherit}
   font-size:14px;font-weight:600;text-decoration:none;
 }
 .join:hover{filter:brightness(1.12)}
+.join.cls{background:var(--accent-bg);color:var(--accent)}
+.join.cls:hover{filter:none;opacity:.8}
 .join:active{filter:brightness(.95)}
 .cp{
   display:inline-flex;align-items:center;gap:6px;padding:6px 0;border:0;background:none;cursor:pointer;
@@ -191,8 +193,30 @@ const TEACHERS = {
   "Панова О.С.":       { name:"Панова О.С.",                     url:"https://zoom.us/j/9389588159", id:"938 958 8159", code:"401" },
   "Семенченко Т.О.":   { name:"Семенченко Т.О.",                 url:"https://zoom.us/j/7649687132", id:"764 968 7132", code:"507" },
   "Волкова Л.В.":      { name:"Волкова Л.В.",                    url:"https://zoom.us/j/9651861969", id:"965 186 1969", code:"1234" },
-  "Корнєєва І.А.":     { name:"Корнєєва І.А.",                   url:"" }   /* посилання не надано */
+  "Корнєєва І.А.":     { name:"Корнєєва І.А.",                   url:"https://us02web.zoom.us/j/4088426587?pwd=MVJxaHZGL0Z2dXg1ZUZGNk44T090QT09", id:"408 842 6587", code:"8888" }
 };
+
+/* Google Classroom: ключ — скорочення предмета (з PDF); для фізики окремо Лб (Корнєєва), для Ін.М. — лише Кремененко */
+const CR = "https://classroom.google.com/c/";
+const CLASSROOMS = {
+  "Інф.Тех.":        CR+"ODkwNDM5NjQwNjMx",
+  "Бол.Екол.":       CR+"ODg0ODgwMTQ1MDM1",
+  "Основи екології": CR+"ODg0ODgwMTQ1MDM1",
+  "Техн. (ОПідпД)":  CR+"ODc3OTIyODAwMjUy",
+  "Хімія":           CR+"ODc2MTMyNDU4Nzg5",
+  "Матем.":          CR+"ODc4MDQyNDEyNDQ3",
+  "Ф-ка/астр.":      CR+"ODc3MzE1MDk2Njc1",
+  "Ф-ка/астр.|Лб":   CR+"ODI2NjY5NTc2NDEz",
+  "Іст.Укр.(шк)":    CR+"ODc2NzAxMDgyMDE3",
+  "Іст.Укр.":        CR+"ODc2NzAxMDgyMDE3",
+  "ТОЕтЕл (ТЕКС)":   CR+"ODc2OTk2MDQ1NTYx",
+  "Ін.М.|Кремененко І.В.": CR+"ODAxMjIzNzk4Mzk2",
+  "Ін.М.|Ігнатьєва Н.В.": CR+"ODc3ODUwOTc1NjQ5?cjc=cwnbpmzs",
+  "Умова":           CR+"Nzc1MjkyNzAzODIz",
+  "УЛіт-ра":         CR+"Nzc1MjkyNzAzODIz",
+  "ФКЗ":             CR+"Nzc0NzI4ODQ3MTA3"
+};
+const classroomUrl = (subj, type, t) => CLASSROOMS[subj+"|"+type] || CLASSROOMS[subj+"|"+t] || CLASSROOMS[subj] || "";
 
 /* Скорочення з PDF → назва предмета і колір смужки (hue 0–360) */
 const SUBJECTS = {
@@ -365,8 +389,12 @@ function cellHTML(lesson, live) {
   h += `<div class="subj">${esc(S.name)}</div>`;
   h += `<div class="sub">${esc(T.name || tKey)}</div>`;
   h += `<div class="sub">${kind} · ауд. ${esc(room)}</div>`;
-  if (T.url) {
-    h += `<div class="act"><a class="join" href="${esc(T.url)}" target="_blank" rel="noopener noreferrer">Приєднатися (Онлайн)</a>${cp("ID", T.id)}${cp("Код", T.code)}</div>`;
+  const CU = classroomUrl(subj, type, tKey);
+  if (T.url || CU) {
+    h += `<div class="act">` +
+      (T.url ? `<a class="join" href="${esc(T.url)}" target="_blank" rel="noopener noreferrer">Приєднатися (Онлайн)</a>` : "") +
+      (CU ? `<a class="join cls" href="${esc(CU)}" target="_blank" rel="noopener noreferrer">Класрум</a>` : "") +
+      (T.url ? `${cp("ID", T.id)}${cp("Код", T.code)}` : "") + `</div>`;
   }
   return h + `</div>`;
 }
